@@ -1,2 +1,2 @@
-# starter-expressts-app
-Starter template for a new express typescript app with webpack
+# Twitch TV Chat Application
+Simple nodejs application to test connecting to twitch stream chat
