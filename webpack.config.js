@@ -21,6 +21,11 @@ module.exports = {
     resolve: {
         extensions: ['.ts']
     },
+    node: {
+        global: false,
+        __filename: false,
+        __dirname: false
+    },
     module: {
         rules: [
             {

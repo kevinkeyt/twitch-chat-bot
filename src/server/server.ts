@@ -1,7 +1,8 @@
 import express = require('express');
-import dotenv = require('dotenv');
+import handlebars = require('express-handlebars');
 import cookieParser = require('cookie-parser');
 import bodyParser = require('body-parser');
+import { resolve as resolvePath } from 'path';
 
 import { Request, Response } from 'express';
 import * as config from './config';
@@ -31,7 +32,11 @@ export class AppServer {
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true}));
-        
+        this.app.engine('handlebars', handlebars());
+        this.app.set('view engine', 'handlebars');
+        this.app.set('views', resolvePath(`${__dirname}`, '../views'));
+        this.app.use('/assets', express.static(resolvePath(`${__dirname}`, '../assets')));
+        this.app.use('/client', express.static(resolvePath(`${__dirname}`, '../dist/client')));
     }
 
     /**
@@ -41,17 +46,7 @@ export class AppServer {
         const router: express.Router = express.Router();
 
         router.get('/', (req: Request, res: Response) => {
-            res.send('hello world');
-        });
-
-        router.get('/api/users', (req: Request, res: Response) => {
-            res.json([{
-                id: 1,
-                name: 'Joe Tester'
-            },{
-                id: 2,
-                name: 'Jane Tester'
-            }]);
+            res.render('index', { title: 'TTV Stream App'} );
         });
 
         this.app.use('/', router);
